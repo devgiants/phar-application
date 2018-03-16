@@ -1,9 +1,4 @@
 {
-  "name": "devgiants/phar-application",
-  "type": "project",
-  "description": "Boilerplate for fully maintenable PHP CLI applications packaged in PHAR",
-  "keywords": ["docker", "php", "cli", "phar", "console"],
-  "homepage": "https://github.com/devgiants/phar-application",
   "license": "MIT",
   "require": {
     "symfony/console": "^3.2",
