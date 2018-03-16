@@ -1,0 +1,69 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Created by PhpStorm.
+ * User: nicolas
+ * Date: 05/02/17
+ * Time: 14:29
+ */
+
+define( 'GITHUB_PAGES_ROOT_URL', 'github_pages_root_url' );
+define( 'GITHUB_PAGES_MANIFEST', 'github_pages_manifest' );
+
+require __DIR__ . '/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use App\Command;
+use Pimple\Container;
+use Symfony\Component\Dotenv\Dotenv;
+use App\Exception\ManifestNotFoundException;
+
+$application = new Application( 'app', '@package_version@' );
+
+// Load env vars
+$dotenv = new Dotenv();
+$dotenv->load( __DIR__ . '/.env' );
+
+
+// Handle dependancies
+$container = new Container();
+
+$container[ GITHUB_PAGES_ROOT_URL ] = getenv( 'GITHUB_PAGES' ) . '/' . getenv( 'PROJECT_NAME' );
+$container[ GITHUB_PAGES_MANIFEST ] = $container[ GITHUB_PAGES_ROOT_URL ] . '/' . 'manifest.json';
+
+
+if ( get_http_response_code( 'http://somenotrealurl.com/notrealpage' ) != "200" ) {
+	throw new ManifestNotFoundException();
+} else {
+	// Check newer version
+	$manifest = file_get_contents( $container[ GITHUB_PAGES_MANIFEST ] );
+}
+
+
+$manifest = json_decode( $manifest )[0];
+// Display warning
+if ( null !== $manifest && ( $manifest->version > $application->getVersion() ) ) {
+	echo "Newer version is available (you run {$application->getVersion()} while last stable version is {$manifest->version}). Run self-update command to update";
+}
+
+
+// TODO Add dependencies
+
+// Register commands
+$application->add( new Command\UpdateCommand( 'self-update', $container ) );
+
+// TODO register commands
+
+$application->run();
+
+
+/**
+ * @param $url
+ *
+ * @return bool|string
+ */
+function get_http_response_code( $url ) {
+	$headers = @get_headers( $url );
+
+	return substr( $headers[0], 9, 3 );
+}

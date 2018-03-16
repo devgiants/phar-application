@@ -1,0 +1,26 @@
+{
+  "chmod": "0755",
+  "directories": [
+    "app/src"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md"
+  ],
+  "finder": [
+    {
+      "name": [
+        "*.php",
+        "*.json"
+      ],
+      "exclude": [
+        "app/Tests"
+      ],
+      "in": "app/vendor"
+    }
+  ],
+  "git-version": "package_version",
+  "main": "app/bin/app",
+  "output": "app.phar",
+  "stub": true
+}
