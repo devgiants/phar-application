@@ -4,5 +4,11 @@
   "description": "Boilerplate for fully maintenable PHP CLI applications packaged in PHAR",
   "keywords": ["docker", "php", "cli", "phar", "console"],
   "homepage": "https://github.com/devgiants/phar-application",
-  "license": "MIT"
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nicolas BONNIOT",
+      "email": "nicolas@devgiants.fr"
+    }
+  ]
 }
