@@ -18,8 +18,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class UpdateCommand extends ApplicationCommand
 {
-    const DOWNLOAD_FOLDER = self::ROOT_URL . 'downloads';
-
     /**
      * @inheritdoc
      */
@@ -27,7 +25,7 @@ class UpdateCommand extends ApplicationCommand
     {
         $this
             ->setName('self-update')
-            ->setDescription('Updates livebox.phar to the latest version')
+            ->setDescription('Updates application to the latest version')
         ;
     }
 

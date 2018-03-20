@@ -17,6 +17,7 @@ use App\Command;
 use Pimple\Container;
 use Symfony\Component\Dotenv\Dotenv;
 use App\Exception\ManifestNotFoundException;
+use Monolog\Logger;
 
 $application = new Application( 'app', '@package_version@' );
 
@@ -31,8 +32,9 @@ $container = new Container();
 $container[ GITHUB_PAGES_ROOT_URL ] = getenv( 'GITHUB_PAGES' ) . '/' . getenv( 'PROJECT_NAME' );
 $container[ GITHUB_PAGES_MANIFEST ] = $container[ GITHUB_PAGES_ROOT_URL ] . '/' . 'manifest.json';
 
+$container['main_logger'] = new Logger( 'main' );
 
-if ( get_http_response_code( 'http://somenotrealurl.com/notrealpage' ) != "200" ) {
+if ( get_http_response_code( $container[ GITHUB_PAGES_MANIFEST ] ) != "200" ) {
 	throw new ManifestNotFoundException();
 } else {
 	// Check newer version
